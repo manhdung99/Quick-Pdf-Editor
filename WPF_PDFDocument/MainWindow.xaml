@@ -10,5 +10,6 @@
         <Button>Nothing</Button>
         <controls:PdfViewer Grid.Row="1" PdfPath="Assets/vr50hd_manual.pdf" x:Name="pdfviewer" Click="Pdfviewer_Click">
         </controls:PdfViewer>
+        
     </Grid>
 </Window>

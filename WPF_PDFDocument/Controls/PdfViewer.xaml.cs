@@ -125,6 +125,7 @@ namespace WPF_PDFDocument.Controls
                         MaxWidth = 800
                     };
                     items.Add(image);
+                    
                 }
             }
         }
@@ -146,7 +147,7 @@ namespace WPF_PDFDocument.Controls
 
         private void PagesContainer_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            UIElement element = sender as UIElement;
+            UIElement element = e.Source as UIElement;
             MessageBox.Show(e.GetPosition(element).ToString());
         }
 
