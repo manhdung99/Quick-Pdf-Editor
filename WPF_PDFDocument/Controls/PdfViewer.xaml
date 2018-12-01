@@ -18,7 +18,6 @@
             <ItemsControl x:Name="PagesContainer" MouseDown="PagesContainer_MouseDown" MouseWheel="PagesContainer_MouseWheel">
             </ItemsControl>
         </ScrollViewer>
-       
         <ComboBox Name="Pages" Grid.Row="1" HorizontalAlignment="Center" Width="100" SelectedIndex="0"></ComboBox>
         <Slider Grid.Row="1" Name="slider" HorizontalAlignment="Right" Width="100" Minimum="0.5" Maximum="2" LargeChange="0.2" Value="1">
         </Slider>

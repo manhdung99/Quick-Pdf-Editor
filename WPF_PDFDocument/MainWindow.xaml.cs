@@ -18,5 +18,15 @@ namespace WPF_PDFDocument
         {
             MessageBox.Show("Fuck");
         }
+
+        private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void TabItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("create new tab");
+        }
     }
 }

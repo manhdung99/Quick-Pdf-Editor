@@ -5,11 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:WPF_PDFDocument.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="720" Width="1280">
     <Grid>
-        <Button>Nothing</Button>
-        <controls:PdfViewer Grid.Row="1" PdfPath="Assets/vr50hd_manual.pdf" x:Name="pdfviewer" Click="Pdfviewer_Click">
-        </controls:PdfViewer>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Open"></MenuItem>
+                    <MenuItem Header="Create"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Comment">
+                    <MenuItem  Header="Text Markup">
+                        <MenuItem Header="Highlight"></MenuItem>
+                        <MenuItem Header="Underline"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Add Text"></MenuItem>
+                    <MenuItem Header="Drawing">
+                        <MenuItem Header="Rectangle"></MenuItem>
+                        <MenuItem Header="Line"></MenuItem>
+                        <MenuItem Header="Elipse"></MenuItem>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Help">
+                    <MenuItem Header="About us"></MenuItem>
+                </MenuItem>
+            </Menu>
+
+        </DockPanel>
+        <TabControl Grid.Row="1" Height="100" VerticalAlignment="Top" Grid.ColumnSpan="2" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Header="Home"/>
+
+            <TabItem Header="Comment">
+                <controls:TabButton Width="60" Height="60" Margin="10,0,441,0"></controls:TabButton>
+            </TabItem>
+
+            <TabItem Header="View" ></TabItem>
+            <TabItem Header="Help"></TabItem>
+            <Button Content="Button" Height="100" Width="75"/>
+        </TabControl>
+        <TabControl Grid.Row="2">
+            <TabItem Header="FileName">
+                <controls:PdfViewer Grid.Row="3" PdfPath="Assets\vr50hd_manual.pdf"></controls:PdfViewer>
+            </TabItem>
+            <TabItem Header="+" MouseDown="TabItem_MouseDown"></TabItem>
+        </TabControl>
         
     </Grid>
 </Window>

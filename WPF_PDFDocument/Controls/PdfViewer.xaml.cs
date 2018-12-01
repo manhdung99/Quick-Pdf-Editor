@@ -15,6 +15,7 @@ namespace WPF_PDFDocument.Controls
     public partial class PdfViewer : UserControl
     {
         //Fields
+        private double width, k;
         private double rzoomvalue;
         public double zoomvalue
         {
@@ -37,7 +38,7 @@ namespace WPF_PDFDocument.Controls
             InitializeComponent();
             slider.ValueChanged += Slider_ValueChanged;
             zoomvalue = 1;
-            
+
             //int nopage = PagesContainer.Items.Count;
             //for (int i = 0; i < nopage; i++)
             //{
@@ -125,7 +126,7 @@ namespace WPF_PDFDocument.Controls
                         MaxWidth = 800
                     };
                     items.Add(image);
-                    
+
                 }
             }
         }
@@ -149,6 +150,13 @@ namespace WPF_PDFDocument.Controls
         {
             UIElement element = e.Source as UIElement;
             MessageBox.Show(e.GetPosition(element).ToString());
+
+            //working
+            Image image = e.Source as Image;
+            //MessageBox.Show(image.DesiredSize.Height +"--" + image.DesiredSize.Width);
+            //working
+            
+            MessageBox.Show(image.ActualHeight * k + "|" + image.ActualWidth * k);
         }
 
 
@@ -158,7 +166,7 @@ namespace WPF_PDFDocument.Controls
 
             if (Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                zoomvalue += 1.0 * e.Delta / 720;
+                zoomvalue += 1.0 * e.Delta / 800;
                 PagesContainer.LayoutTransform = new ScaleTransform(zoomvalue, zoomvalue);
             }
         }
@@ -167,13 +175,11 @@ namespace WPF_PDFDocument.Controls
         {
             if (Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                zoomvalue += 1.0 * e.Delta / 360;
+                zoomvalue += 1.0 * e.Delta / 800;
                 PagesContainer.LayoutTransform = new ScaleTransform(zoomvalue, zoomvalue);
-            }
-            else
-            {
-                base.OnMouseWheel(e);
+                width = PagesContainer.DesiredSize.Width;
             }
         }
+
     }
 }
