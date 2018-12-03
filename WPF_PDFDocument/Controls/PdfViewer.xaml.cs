@@ -15,7 +15,6 @@ namespace WPF_PDFDocument.Controls
     public partial class PdfViewer : UserControl
     {
         //Fields
-        private double width, k;
         private double rzoomvalue;
         public double zoomvalue
         {
@@ -48,10 +47,15 @@ namespace WPF_PDFDocument.Controls
             //}
         }
 
+        
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            this.zoomvalue = e.NewValue;
-            PagesContainer.LayoutTransform = new ScaleTransform(zoomvalue, zoomvalue);
+            //this.zoomvalue = e.NewValue;
+            //PagesContainer.LayoutTransform = new ScaleTransform(zoomvalue, zoomvalue);
+
+            
+
+
         }
 
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PdfViewer));
@@ -83,8 +87,7 @@ namespace WPF_PDFDocument.Controls
         }
 
         // Using a DependencyProperty as the backing store for PdfPath.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PdfPathProperty =
-        DependencyProperty.Register("PdfPath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, propertyChangedCallback: OnPdfPathChanged));
+        public static readonly DependencyProperty PdfPathProperty = DependencyProperty.Register("PdfPath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, propertyChangedCallback: OnPdfPathChanged));
 
         private static void OnPdfPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -95,20 +98,24 @@ namespace WPF_PDFDocument.Controls
                 //making sure it's an absolute path
                 var path = System.IO.Path.GetFullPath(pdfDrawer.PdfPath);
 
+
                 StorageFile.GetFileFromPathAsync(path).AsTask()
-                  //load pdf document on background thread
-                  .ContinueWith(t => PdfDocument.LoadFromFileAsync(t.Result).AsTask()).Unwrap()
-                  //display on UI Thread
-                  .ContinueWith(t2 => PdfToImages(pdfDrawer, t2.Result), TaskScheduler.FromCurrentSynchronizationContext());
+                //load pdf document on background thread
+                .ContinueWith(t => PdfDocument.LoadFromFileAsync(t.Result).AsTask()).Unwrap()
+                //display on UI Thread
+                .ContinueWith(t2 => PdfToImages(pdfDrawer, t2.Result), TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
         #endregion
 
 
-
         private async static Task PdfToImages(PdfViewer pdfViewer, PdfDocument pdfDoc)
         {
             var items = pdfViewer.PagesContainer.Items;
+
+            //Small update
+            var comboboxitem = pdfViewer.Pages.Items;
+
             items.Clear();
 
             if (pdfDoc == null) return;
@@ -126,7 +133,8 @@ namespace WPF_PDFDocument.Controls
                         MaxWidth = 800
                     };
                     items.Add(image);
-
+                    //Small update
+                    comboboxitem.Add(i + 1 + "/" + pdfDoc.PageCount);
                 }
             }
         }
@@ -151,12 +159,8 @@ namespace WPF_PDFDocument.Controls
             UIElement element = e.Source as UIElement;
             MessageBox.Show(e.GetPosition(element).ToString());
 
-            //working
-            Image image = e.Source as Image;
-            //MessageBox.Show(image.DesiredSize.Height +"--" + image.DesiredSize.Width);
-            //working
+            MessageBox.Show(element.RenderSize.ToString());
             
-            MessageBox.Show(image.ActualHeight * k + "|" + image.ActualWidth * k);
         }
 
 
@@ -171,13 +175,53 @@ namespace WPF_PDFDocument.Controls
             }
         }
 
-        private void PagesContainer_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void Btntest_Click(object sender, RoutedEventArgs e)
         {
+            jumpToPage(50);
+        }
+
+        private void jumpToPage(int n)
+        {
+            try
+            {
+                Image image = PagesContainer.Items.GetItemAt(n - 1) as Image;
+                image.BringIntoView();
+            }
+            catch (System.ArgumentOutOfRangeException)
+            {
+                if (n == 0)
+                    return;
+                MessageBox.Show("Please wait...");
+            }
+        }
+
+        private void JumptoPage(object sender, SelectionChangedEventArgs e)
+        {
+            jumpToPage(Pages.SelectedIndex);
+        }
+
+        protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
+        {
+            //Xây dựng ma trận transform dựa trên vị trí của chuột
+
+
             if (Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                zoomvalue += 1.0 * e.Delta / 800;
-                PagesContainer.LayoutTransform = new ScaleTransform(zoomvalue, zoomvalue);
-                width = PagesContainer.DesiredSize.Width;
+                var element = PagesContainer as UIElement;
+                var position = e.GetPosition(element);
+
+                var transform = element.RenderTransform as MatrixTransform;
+                var matrix = transform.Matrix;
+                var scale = e.Delta >= 0 ? 1.1 : (1.0 / 1.1); // choose appropriate scaling factor
+
+                matrix.ScaleAtPrepend(scale, scale, position.X, position.Y);
+
+                element.RenderTransform = new MatrixTransform(matrix);
+                e.Handled=true;
+            }
+            else
+            {
+                base.OnPreviewMouseWheel(e);
             }
         }
 

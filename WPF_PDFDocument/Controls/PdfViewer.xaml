@@ -14,12 +14,12 @@
             <RowDefinition Height="20">
             </RowDefinition>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" PanningMode="Both" Background="DarkGray">
-            <ItemsControl x:Name="PagesContainer" MouseDown="PagesContainer_MouseDown" MouseWheel="PagesContainer_MouseWheel">
+        <ScrollViewer Name="scrollview" Grid.Row="0" PanningMode="Both" Background="DarkGray">
+            <ItemsControl x:Name="PagesContainer" MouseDown="PagesContainer_MouseDown">
             </ItemsControl>
         </ScrollViewer>
-        <ComboBox Name="Pages" Grid.Row="1" HorizontalAlignment="Center" Width="100" SelectedIndex="0"></ComboBox>
-        <Slider Grid.Row="1" Name="slider" HorizontalAlignment="Right" Width="100" Minimum="0.5" Maximum="2" LargeChange="0.2" Value="1">
-        </Slider>
+        <ComboBox Name="Pages" Grid.Row="1" HorizontalAlignment="Center" Width="100" SelectedIndex="0" SelectionChanged="JumptoPage"></ComboBox>
+        <Button Name="btntest" Grid.Row="1" HorizontalAlignment="Left" Width="50" Click="Btntest_Click"></Button>
+        <Slider Grid.Row="1" Name="slider" HorizontalAlignment="Right" Width="100" Minimum="0.5" Maximum="2" LargeChange="0.2" Value="1"/>
     </Grid>
 </UserControl>

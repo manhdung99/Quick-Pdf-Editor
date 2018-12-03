@@ -41,12 +41,11 @@
             <TabItem Header="Home"/>
 
             <TabItem Header="Comment">
-                <controls:TabButton Width="60" Height="60" Margin="10,0,441,0"></controls:TabButton>
+                <controls:TabButton Width="60" Height="60" Margin="10,0,441,0" Loaded="TabButton_Loaded"></controls:TabButton>
             </TabItem>
 
             <TabItem Header="View" ></TabItem>
             <TabItem Header="Help"></TabItem>
-            <Button Content="Button" Height="100" Width="75"/>
         </TabControl>
         <TabControl Grid.Row="2">
             <TabItem Header="FileName">

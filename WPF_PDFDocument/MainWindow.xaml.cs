@@ -28,5 +28,15 @@ namespace WPF_PDFDocument
         {
             MessageBox.Show("create new tab");
         }
+
+        private void TabButton_Click(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void TabButton_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

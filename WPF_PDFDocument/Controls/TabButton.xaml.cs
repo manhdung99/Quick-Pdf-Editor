@@ -20,9 +20,18 @@ namespace WPF_PDFDocument.Controls
     /// </summary>
     public partial class TabButton : UserControl
     {
+        
+
         public TabButton()
         {
             InitializeComponent();
         }
+
+        private void Icon_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button.RaiseEvent(e);
+        }
+
+        
     }
 }

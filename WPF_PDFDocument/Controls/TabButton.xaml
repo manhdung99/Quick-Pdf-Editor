@@ -7,9 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="60">
     <Grid>
-        <StackPanel Width="60" Height="60">
-            <Image Source="C:\Users\manhd\Documents\Pdf_Editor\Quick-Pdf-Editor\WPF_PDFDocument\bin\Debug\logo.png" Height="30" Width="30"></Image>
-            <Label Content="Highlight" HorizontalAlignment="Center"></Label>
-        </StackPanel>
+        <Button Name="Button" Background="Transparent" BorderThickness="0">
+            <StackPanel Width="60" Height="60">
+                <Image Name="Icon" MouseEnter="Icon_MouseEnter" Source="C:\Users\manhd\Documents\Pdf_Editor\Quick-Pdf-Editor\WPF_PDFDocument\bin\Debug\logo.png" Height="30" Width="30"></Image>
+                <Label Content="Highlight" HorizontalAlignment="Center"></Label>
+            </StackPanel>
+        </Button>
     </Grid>
 </UserControl>
