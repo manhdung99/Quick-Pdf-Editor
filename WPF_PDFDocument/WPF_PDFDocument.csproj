@@ -107,6 +107,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialog\InsertPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,6 +124,9 @@
     </Compile>
     <Compile Include="Controls\TabButton.xaml.cs">
       <DependentUpon>TabButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\InsertPage.xaml.cs">
+      <DependentUpon>InsertPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditPDF.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -157,5 +164,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

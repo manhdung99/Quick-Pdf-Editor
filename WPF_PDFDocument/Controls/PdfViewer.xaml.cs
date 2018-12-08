@@ -10,10 +10,19 @@ using Windows.Data.Pdf;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
+//using System.Drawing;
+//using System.Drawing.Drawing2D;
+//using System.Drawing.Imaging;
 namespace WPF_PDFDocument.Controls
 {
     public partial class PdfViewer : UserControl
     {
+        //void testmethod()
+        //{
+        //    Graphics graphics = Graphics.FromImage(this.PagesContainer.Items.CurrentItem as Bitmap);
+        //    graphics.DrawLine(new System.Drawing.Pen(System.Drawing.Brushes.AliceBlue), 0, 0, 50, 50);
+
+        //}
         //Fields
         private double rzoomvalue;
         public double zoomvalue
@@ -35,7 +44,7 @@ namespace WPF_PDFDocument.Controls
         public PdfViewer()
         {
             InitializeComponent();
-            slider.ValueChanged += Slider_ValueChanged;
+            
             zoomvalue = 1;
 
             //int nopage = PagesContainer.Items.Count;
@@ -47,16 +56,8 @@ namespace WPF_PDFDocument.Controls
             //}
         }
 
+
         
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            //this.zoomvalue = e.NewValue;
-            //PagesContainer.LayoutTransform = new ScaleTransform(zoomvalue, zoomvalue);
-
-            
-
-
-        }
 
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PdfViewer));
         public event RoutedEventHandler Click
@@ -160,24 +161,12 @@ namespace WPF_PDFDocument.Controls
             MessageBox.Show(e.GetPosition(element).ToString());
 
             MessageBox.Show(element.RenderSize.ToString());
-            
-        }
 
-
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            base.OnMouseWheel(e);
-
-            if (Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl))
-            {
-                zoomvalue += 1.0 * e.Delta / 800;
-                PagesContainer.LayoutTransform = new ScaleTransform(zoomvalue, zoomvalue);
-            }
         }
 
         private void Btntest_Click(object sender, RoutedEventArgs e)
         {
-            jumpToPage(50);
+            MessageBox.Show("Paused");
         }
 
         private void jumpToPage(int n)
@@ -203,8 +192,6 @@ namespace WPF_PDFDocument.Controls
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
             //Xây dựng ma trận transform dựa trên vị trí của chuột
-
-
             if (Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl))
             {
                 var element = PagesContainer as UIElement;
@@ -212,12 +199,14 @@ namespace WPF_PDFDocument.Controls
 
                 var transform = element.RenderTransform as MatrixTransform;
                 var matrix = transform.Matrix;
-                var scale = e.Delta >= 0 ? 1.1 : (1.0 / 1.1); // choose appropriate scaling factor
+                var scale = e.Delta >= 0 ? 1.1 : (1.0 / 1.1); // 
+                zoomvalue *= scale;
+                slider.Value = Math.Log10(zoomvalue);
 
                 matrix.ScaleAtPrepend(scale, scale, position.X, position.Y);
 
                 element.RenderTransform = new MatrixTransform(matrix);
-                e.Handled=true;
+                e.Handled = true;
             }
             else
             {
@@ -225,5 +214,22 @@ namespace WPF_PDFDocument.Controls
             }
         }
 
+        private void SliderZoom_ValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var element = PagesContainer as UIElement;
+            var trasnform = element.RenderTransform as MatrixTransform;
+            var matrix = trasnform.Matrix;
+            var scale = Math.Pow(10, e.NewValue) / Math.Pow(10, e.OldValue);
+
+            matrix.Scale(scale, scale);
+            element.RenderTransform = new MatrixTransform(matrix);
+
+            e.Handled = true;
+        }
+        
+        void nothing()
+        {
+            
+        }
     }
 }

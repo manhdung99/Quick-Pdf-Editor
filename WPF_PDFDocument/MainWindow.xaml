@@ -5,19 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:WPF_PDFDocument.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
+        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-
-        <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
-            <Menu DockPanel.Dock="Top">
+        <StackPanel VerticalAlignment="Top" Grid.Row="0">
+            <Menu Height="20">
                 <MenuItem Header="File">
-                    <MenuItem Header="Open"></MenuItem>
+                    <MenuItem Header="Open" Click="OpenFileDialog_Click"></MenuItem>
                     <MenuItem Header="Create"></MenuItem>
+                    <MenuItem Header="Exit" Click="Exit_Click"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Comment">
                     <MenuItem  Header="Text Markup">
@@ -32,27 +31,36 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Help">
-                    <MenuItem Header="About us"></MenuItem>
+                    <MenuItem Header="About" Click="MenuItem_Click"></MenuItem>
                 </MenuItem>
             </Menu>
 
-        </DockPanel>
-        <TabControl Grid.Row="1" Height="100" VerticalAlignment="Top" Grid.ColumnSpan="2" SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="Home"/>
-
-            <TabItem Header="Comment">
-                <controls:TabButton Width="60" Height="60" Margin="10,0,441,0" Loaded="TabButton_Loaded"></controls:TabButton>
-            </TabItem>
-
-            <TabItem Header="View" ></TabItem>
-            <TabItem Header="Help"></TabItem>
-        </TabControl>
-        <TabControl Grid.Row="2">
+            <TabControl Height="100" VerticalAlignment="Top" SelectionChanged="TabControl_SelectionChanged">
+                <TabItem Name="home" Header="Home">
+                    <StackPanel Name="HomeStack" Orientation="Horizontal"/>
+                </TabItem>
+                <TabItem Header="Edit" >
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <controls:TabButton x:Name="BtnInsertPage" Text="Insert Page" PreviewMouseDown="InsertPage"></controls:TabButton>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Comment">
+                    
+                </TabItem>
+                
+                <TabItem Header="Help">
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                        <controls:TabButton IconPath="Icon\logo.png" Text="ABC" Height="72" VerticalAlignment="Bottom"></controls:TabButton>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+        
+        <TabControl Grid.Row="1">
             <TabItem Header="FileName">
-                <controls:PdfViewer Grid.Row="3" PdfPath="Assets\vr50hd_manual.pdf"></controls:PdfViewer>
+                <controls:PdfViewer x:Name="pdfviewer" Grid.Row="3" PdfPath="Assets\vr50hd_manual.pdf" Loaded="PdfViewer_Loaded"></controls:PdfViewer>
             </TabItem>
             <TabItem Header="+" MouseDown="TabItem_MouseDown"></TabItem>
         </TabControl>
-        
     </Grid>
 </Window>
