@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:WPF_PDFDocument.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="Quick Pdf Editor" Height="720" Width="1280" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="120"></RowDefinition>
@@ -16,6 +16,10 @@
                 <MenuItem Header="File">
                     <MenuItem Header="Open" Click="OpenFileDialog_Click"></MenuItem>
                     <MenuItem Header="New Blank Pdf" Click="NewBlankPdf_Click"></MenuItem>
+                    <MenuItem Header="Save" Click="Save_Click"></MenuItem>
+                    <MenuItem Header="Save All" Click="SaveAll_Click"></MenuItem>
+                    <MenuItem Name="BtnClose" Header="Close" Click="Close_Click"></MenuItem>
+                    <MenuItem Header="Close All" Click="CloseAll_Click"></MenuItem>
                     <MenuItem Header="Exit" Click="Exit_Click"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Comment">

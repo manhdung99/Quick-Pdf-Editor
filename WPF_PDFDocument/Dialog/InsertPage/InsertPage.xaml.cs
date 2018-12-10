@@ -5,17 +5,42 @@ using System.Windows.Controls;
 
 namespace WPF_PDFDocument.Dialog
 {
-    /// <summary>
-    /// Interaction logic for InsertPage.xaml
-    /// </summary>
+    
     public partial class InsertPage : Window
     {
+        TabItem tabitem;
         private List<int> ListPageInsert;
-
+        private int _offset;
+        private int offset
+        {
+            get
+            {
+                return _offset;
+            }
+            set
+            {
+                _offset = value;
+                tboffset.Text = _offset.ToString();
+            }
+              
+            
+        }
+        private string DesPath;
         public InsertPage()
         {
             InitializeComponent();
             ListPageInsert = new List<int>();
+            offset = PreviewPDF.PagesContainer.Items.Count;
+        }
+        
+        //Woring
+        public InsertPage(TabItem tab)
+        {
+            InitializeComponent();
+            ListPageInsert = new List<int>();
+            var pdfviewer = tab.Content as Controls.PdfViewer;
+            DesPath = pdfviewer.PdfPath;
+            this.tabitem = tab;
         }
 
         private void InsertCurrentPage_Click(object sender, RoutedEventArgs e)
@@ -43,10 +68,12 @@ namespace WPF_PDFDocument.Dialog
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            //Create new Pdf from this PDF
-            //Perform Insert to pdf
-            //Change pdfpath to new pdffile
+            PDFAction.InsertPageFromPdf(this.PreviewPDF.PdfPath, this.DesPath, ListPageInsert,this.offset);
+            MessageBox.Show("Insert pages successfully!","Notification",MessageBoxButton.OK,MessageBoxImage.Information);
 
+            //Create Temporary
+            var pdfviever = tabitem.Content as Controls.PdfViewer;
+            pdfviever.PdfPath= System.IO.Path.Combine(System.IO.Path.GetTempPath(), "Merged" + --PDFAction.number + ".pdf");
             this.Close();
         }
 
@@ -61,6 +88,11 @@ namespace WPF_PDFDocument.Dialog
             int removeindex = ListBox_Data.SelectedIndex;
             this.ListPageInsert.RemoveAt(removeindex);
             UpdateListPage();
+        }
+
+        private void PageOffset_Changed(object sender, TextChangedEventArgs e)
+        {
+            this.offset = Convert.ToInt32(this.tboffset.Text);
         }
     }
 }

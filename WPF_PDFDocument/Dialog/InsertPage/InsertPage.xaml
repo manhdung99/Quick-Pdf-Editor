@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPF_PDFDocument.Dialog"
         mc:Ignorable="d"
         xmlns:controls="clr-namespace:WPF_PDFDocument.Controls"
-        Title="InsertPage" Height="450" Width="800" Loaded="InsertPage_Loaded">
+        Title="InsertPage" Height="720" Width="1280" Loaded="InsertPage_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -21,5 +21,7 @@
         <ListBox Name="ListBox_Data" Grid.Column="1" VerticalAlignment="Bottom" Height="200" ScrollViewer.CanContentScroll="True" Margin="0,0,0,40" ScrollViewer.VerticalScrollBarVisibility="Auto"></ListBox>
         <Button Name="btnRemove" Content="Remove" Grid.Column="1" VerticalAlignment="Bottom" Height="20" Margin="10,10,10,10" Click="Remove_Click"></Button>
         <Label Grid.Column="1" Content="List Pages" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,240"></Label>
+        <Label Grid.Column="1" Content="Page Offset" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="35,0,44,306"></Label>
+        <TextBox Name="tboffset" Grid.Column="1" Height="30" Margin="0,388,0,271" TextChanged="PageOffset_Changed"></TextBox>
     </Grid>
 </Window>

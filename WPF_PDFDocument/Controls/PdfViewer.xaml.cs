@@ -17,6 +17,9 @@ namespace WPF_PDFDocument.Controls
 {
     public partial class PdfViewer : UserControl
     {
+        private Boolean PathAssigned;
+        public string OriginalPdfPath;
+        public int NumberOfPages; //Need improve
         private int _CurrentPage;
         public int CurrentPage
         {
@@ -50,6 +53,7 @@ namespace WPF_PDFDocument.Controls
         public PdfViewer()
         {
             InitializeComponent();
+            PathAssigned = false;
             CurrentPage = new int();
             zoomvalue = 1;
         }
@@ -87,19 +91,24 @@ namespace WPF_PDFDocument.Controls
 
         private static void OnPdfPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            //Đây là cái PdfViewer
             var pdfDrawer = (PdfViewer)d;
+            
 
             if (!string.IsNullOrEmpty(pdfDrawer.PdfPath))
             {
                 //making sure it's an absolute path
                 var path = System.IO.Path.GetFullPath(pdfDrawer.PdfPath);
-
-
                 StorageFile.GetFileFromPathAsync(path).AsTask()
                 //load pdf document on background thread
                 .ContinueWith(t => PdfDocument.LoadFromFileAsync(t.Result).AsTask()).Unwrap()
                 //display on UI Thread
                 .ContinueWith(t2 => PdfToImages(pdfDrawer, t2.Result), TaskScheduler.FromCurrentSynchronizationContext());
+                if (pdfDrawer.PathAssigned == false)
+                {
+                    pdfDrawer.OriginalPdfPath = path;
+                    pdfDrawer.PathAssigned = true;
+                }
             }
         }
         #endregion
@@ -115,6 +124,7 @@ namespace WPF_PDFDocument.Controls
             items.Clear();
 
             if (pdfDoc == null) return;
+            
 
             for (uint i = 0; i < pdfDoc.PageCount; i++)
             {
@@ -279,6 +289,9 @@ namespace WPF_PDFDocument.Controls
         }
         //End Update
 
-
+        void test()
+        {
+            
+        }
     }
 }
