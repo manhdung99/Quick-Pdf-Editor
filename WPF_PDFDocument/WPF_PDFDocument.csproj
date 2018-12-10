@@ -107,7 +107,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialog\InsertPage.xaml">
+    <Page Include="Dialog\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\InsertPage\ChoosePageInsert.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\InsertPage\InsertPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,7 +133,13 @@
     <Compile Include="Controls\TabButton.xaml.cs">
       <DependentUpon>TabButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialog\InsertPage.xaml.cs">
+    <Compile Include="Dialog\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\InsertPage\ChoosePageInsert.xaml.cs">
+      <DependentUpon>ChoosePageInsert.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\InsertPage\InsertPage.xaml.cs">
       <DependentUpon>InsertPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditPDF.cs" />

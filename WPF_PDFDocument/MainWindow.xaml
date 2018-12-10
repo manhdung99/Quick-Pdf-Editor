@@ -15,7 +15,7 @@
             <Menu Height="20">
                 <MenuItem Header="File">
                     <MenuItem Header="Open" Click="OpenFileDialog_Click"></MenuItem>
-                    <MenuItem Header="Create"></MenuItem>
+                    <MenuItem Header="New Blank Pdf" Click="NewBlankPdf_Click"></MenuItem>
                     <MenuItem Header="Exit" Click="Exit_Click"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Comment">
@@ -37,30 +37,29 @@
 
             <TabControl Height="100" VerticalAlignment="Top" SelectionChanged="TabControl_SelectionChanged">
                 <TabItem Name="home" Header="Home">
-                    <StackPanel Name="HomeStack" Orientation="Horizontal"/>
+                    <StackPanel Name="HomeStack" Orientation="Horizontal">
+                        
+                    </StackPanel>
                 </TabItem>
                 <TabItem Header="Edit" >
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <controls:TabButton x:Name="BtnInsertPage" Text="Insert Page" PreviewMouseDown="InsertPage"></controls:TabButton>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Comment">
-                    
-                </TabItem>
-                
-                <TabItem Header="Help">
-                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                        <controls:TabButton IconPath="Icon\logo.png" Text="ABC" Height="72" VerticalAlignment="Bottom"></controls:TabButton>
+                <TabItem Header="View">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <controls:TabButton Text="New Tab" PreviewMouseDown="NewTab_Click" Margin="10,0,10,0"></controls:TabButton>
+                        <controls:TabButton Text="Close Tab" PreviewMouseDown="NewTab_Click" Margin="10,0,10,0" Width="131"></controls:TabButton>
+                        <controls:TabButton Text="Close All" PreviewMouseDown="NewTab_Click" Margin="10,0,10,0" Width="131"></controls:TabButton>
                     </StackPanel>
+                </TabItem>
+                <TabItem Header="Comment">
+
                 </TabItem>
             </TabControl>
         </StackPanel>
-        
-        <TabControl Grid.Row="1">
-            <TabItem Header="FileName">
-                <controls:PdfViewer x:Name="pdfviewer" Grid.Row="3" PdfPath="Assets\vr50hd_manual.pdf" Loaded="PdfViewer_Loaded"></controls:PdfViewer>
-            </TabItem>
-            <TabItem Header="+" MouseDown="TabItem_MouseDown"></TabItem>
+
+        <TabControl Name="TabController" Grid.Row="1">
         </TabControl>
     </Grid>
 </Window>

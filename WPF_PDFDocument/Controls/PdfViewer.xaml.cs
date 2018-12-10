@@ -17,13 +17,19 @@ namespace WPF_PDFDocument.Controls
 {
     public partial class PdfViewer : UserControl
     {
-        //void testmethod()
-        //{
-        //    Graphics graphics = Graphics.FromImage(this.PagesContainer.Items.CurrentItem as Bitmap);
-        //    graphics.DrawLine(new System.Drawing.Pen(System.Drawing.Brushes.AliceBlue), 0, 0, 50, 50);
-
-        //}
-        //Fields
+        private int _CurrentPage;
+        public int CurrentPage
+        {
+            get
+            {
+                return _CurrentPage;
+            }
+            set
+            {
+                _CurrentPage = value;
+                textbox.Text = _CurrentPage.ToString();
+            }
+        }
         private double rzoomvalue;
         public double zoomvalue
         {
@@ -44,20 +50,9 @@ namespace WPF_PDFDocument.Controls
         public PdfViewer()
         {
             InitializeComponent();
-            
+            CurrentPage = new int();
             zoomvalue = 1;
-
-            //int nopage = PagesContainer.Items.Count;
-            //for (int i = 0; i < nopage; i++)
-            //{
-            //    ComboBoxItem item = new ComboBoxItem();
-
-            //    Pages.Items.Add(new ListBoxItem());
-            //}
         }
-
-
-        
 
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PdfViewer));
         public event RoutedEventHandler Click
@@ -191,6 +186,7 @@ namespace WPF_PDFDocument.Controls
 
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
+
             //Xây dựng ma trận transform dựa trên vị trí của chuột
             if (Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl))
             {
@@ -199,7 +195,7 @@ namespace WPF_PDFDocument.Controls
 
                 var transform = element.RenderTransform as MatrixTransform;
                 var matrix = transform.Matrix;
-                var scale = e.Delta >= 0 ? 1.1 : (1.0 / 1.1); // 
+                var scale = e.Delta >= 0 ? 1.2 : (1.0 / 1.2); // 
                 zoomvalue *= scale;
                 slider.Value = Math.Log10(zoomvalue);
 
@@ -226,10 +222,63 @@ namespace WPF_PDFDocument.Controls
 
             e.Handled = true;
         }
-        
-        void nothing()
+        //Begin Update
+        private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
         {
-            
+            if (!element.IsVisible)
+                return false;
+            Rect bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
+            Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
+            return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
         }
+
+        private void UpdatePageNumber()
+        {
+            var items = this.PagesContainer.Items;
+            if (items.Count == 0)
+                return;
+            //List Lưu trữ số các trang đang nhìn thấy
+            System.Collections.Generic.List<int> ListPage = new System.Collections.Generic.List<int>();
+            ListPage.Clear();
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (IsUserVisible(items.GetItemAt(i) as FrameworkElement, this.scrollview))
+                {
+                    ListPage.Add(i);
+                }
+            }
+
+            int position = new int();
+            if (ListPage.Count == 1)
+            {
+                position = ListPage[0];
+                goto labelx;
+            }
+            if (ListPage.Count == 2)
+            {
+                position = ListPage[0];
+                goto labelx;
+            }
+            try
+            {
+                position = ListPage[ListPage.Count / 2];
+            }catch(ArgumentOutOfRangeException)
+            {
+                return;
+            }
+            labelx:  this.Pages.Items.MoveCurrentToPosition(position);
+            this.Pages.UpdateLayout();
+            this.CurrentPage = position;
+        }
+
+        private void ItemControl_Scroll(object sender, MouseWheelEventArgs e)
+        {
+            UpdatePageNumber();
+            //this.Pages.Items.MoveCurrentToLast();
+            //MessageBox.Show(Pages.Items.CurrentItem.ToString());
+        }
+        //End Update
+
+
     }
 }
