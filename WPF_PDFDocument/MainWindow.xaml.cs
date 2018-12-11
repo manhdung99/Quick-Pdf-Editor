@@ -26,12 +26,11 @@ namespace WPF_PDFDocument
 
         private void Pdfviewer_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Fuck");
         }
 
         private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-
+ 
         }
 
         private void TabItem_MouseDown(object sender, MouseButtonEventArgs e)
@@ -188,6 +187,7 @@ namespace WPF_PDFDocument
 
             FileInfo fileInfo = new FileInfo(pdfviewer.PdfPath);
             fileInfo.MoveTo(pdfviewer.OriginalPdfPath);
+            pdfviewer.PdfPath = pdfviewer.OriginalPdfPath;
             MessageBox.Show("File Saved!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -225,6 +225,13 @@ namespace WPF_PDFDocument
         private void CloseAll_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void DeletePage_Click(object sender, MouseButtonEventArgs e)
+        {
+            Dialog.DeletePage deletePage = new Dialog.DeletePage(this.TabController.SelectedItem as System.Windows.Controls.TabItem);
+            deletePage.Show();
+            deletePage.BringIntoView();
         }
     }
 }

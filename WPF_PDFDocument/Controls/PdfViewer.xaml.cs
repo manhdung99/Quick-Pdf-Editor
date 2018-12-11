@@ -97,13 +97,9 @@ namespace WPF_PDFDocument.Controls
 
             if (!string.IsNullOrEmpty(pdfDrawer.PdfPath))
             {
-                //making sure it's an absolute path
                 var path = System.IO.Path.GetFullPath(pdfDrawer.PdfPath);
-                StorageFile.GetFileFromPathAsync(path).AsTask()
-                //load pdf document on background thread
-                .ContinueWith(t => PdfDocument.LoadFromFileAsync(t.Result).AsTask()).Unwrap()
-                //display on UI Thread
-                .ContinueWith(t2 => PdfToImages(pdfDrawer, t2.Result), TaskScheduler.FromCurrentSynchronizationContext());
+
+                StorageFile.GetFileFromPathAsync(path).AsTask().ContinueWith(t => PdfDocument.LoadFromFileAsync(t.Result).AsTask()).Unwrap().ContinueWith(t2 => PdfToImages(pdfDrawer, t2.Result), TaskScheduler.FromCurrentSynchronizationContext());
                 if (pdfDrawer.PathAssigned == false)
                 {
                     pdfDrawer.OriginalPdfPath = path;
@@ -145,6 +141,7 @@ namespace WPF_PDFDocument.Controls
             }
         }
 
+        //Disposed
         private static async Task<BitmapImage> PageToBitmapAsync(PdfPage page)
         {
             BitmapImage image = new BitmapImage();
@@ -156,7 +153,11 @@ namespace WPF_PDFDocument.Controls
                 image.CacheOption = BitmapCacheOption.OnLoad;
                 image.StreamSource = stream.AsStream();
                 image.EndInit();
+                stream.Dispose();
             }
+
+            page.Dispose();
+            
             return image;
         }
 

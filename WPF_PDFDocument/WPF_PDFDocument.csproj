@@ -111,6 +111,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialog\DeletePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialog\InsertPage\ChoosePageInsert.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -135,6 +139,9 @@
     </Compile>
     <Compile Include="Dialog\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\DeletePage.xaml.cs">
+      <DependentUpon>DeletePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\InsertPage\ChoosePageInsert.xaml.cs">
       <DependentUpon>ChoosePageInsert.xaml</DependentUpon>
