@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_PDFDocument.Dialog"
         mc:Ignorable="d"
-        Title="About" Height="200" Width="400">
+        Title="About" Height="170" Width="420">
     <Grid>
-        <RichTextBox Name="richtb" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="372" Height="149">
+        <RichTextBox Name="richtb" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,10,10,10" BorderThickness="0" VerticalScrollBarVisibility="Disabled">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="Về Quick PDF Editor:"/>
@@ -19,7 +19,7 @@
                     <Run Text="Tác giả: Đào Mạnh Dũng - Phạm Duy Cường"></Run>
                 </Paragraph>
                 <Paragraph>
-                    <Run Text="Github:"></Run>
+                    <Run Text="Github: https://github.com/manhdung99/Quick-Pdf-Editor"></Run>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>

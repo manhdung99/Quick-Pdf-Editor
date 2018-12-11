@@ -10,6 +10,9 @@ using Windows.Data.Pdf;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
+using System.Collections.Concurrent;
+using System.Threading;
+
 //using System.Drawing;
 //using System.Drawing.Drawing2D;
 //using System.Drawing.Imaging;
@@ -17,10 +20,13 @@ namespace WPF_PDFDocument.Controls
 {
     public partial class PdfViewer : UserControl
     {
+        ConcurrentBag<Task> tasks;
         private Boolean PathAssigned;
         public string OriginalPdfPath;
         public int NumberOfPages; //Need improve
         private int _CurrentPage;
+        CancellationToken canceltoken;
+        
         public int CurrentPage
         {
             get
@@ -30,7 +36,7 @@ namespace WPF_PDFDocument.Controls
             set
             {
                 _CurrentPage = value;
-                textbox.Text = _CurrentPage.ToString();
+                Pages.SelectedIndex = _CurrentPage;
             }
         }
         private double rzoomvalue;
@@ -53,6 +59,8 @@ namespace WPF_PDFDocument.Controls
         public PdfViewer()
         {
             InitializeComponent();
+            canceltoken = new CancellationToken(false);
+            tasks = new ConcurrentBag<Task>();
             PathAssigned = false;
             CurrentPage = new int();
             zoomvalue = 1;
@@ -99,7 +107,9 @@ namespace WPF_PDFDocument.Controls
             {
                 var path = System.IO.Path.GetFullPath(pdfDrawer.PdfPath);
 
-                StorageFile.GetFileFromPathAsync(path).AsTask().ContinueWith(t => PdfDocument.LoadFromFileAsync(t.Result).AsTask()).Unwrap().ContinueWith(t2 => PdfToImages(pdfDrawer, t2.Result), TaskScheduler.FromCurrentSynchronizationContext());
+                StorageFile.GetFileFromPathAsync(path).AsTask(pdfDrawer.canceltoken).ContinueWith(t => PdfDocument.LoadFromFileAsync(t.Result).AsTask(), pdfDrawer.canceltoken).Unwrap()
+                .ContinueWith(t2 => PdfToImages(pdfDrawer, t2.Result), TaskScheduler.FromCurrentSynchronizationContext());
+
                 if (pdfDrawer.PathAssigned == false)
                 {
                     pdfDrawer.OriginalPdfPath = path;
@@ -112,6 +122,8 @@ namespace WPF_PDFDocument.Controls
 
         private async static Task PdfToImages(PdfViewer pdfViewer, PdfDocument pdfDoc)
         {
+            CancellationTokenSource tokenSource = new CancellationTokenSource();
+            
             var items = pdfViewer.PagesContainer.Items;
 
             //Small update

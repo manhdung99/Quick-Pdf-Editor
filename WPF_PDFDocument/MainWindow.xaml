@@ -15,9 +15,10 @@
             <Menu Height="20">
                 <MenuItem Header="File">
                     <MenuItem Header="Open" Click="OpenFileDialog_Click"></MenuItem>
-                    <MenuItem Header="New Blank Pdf" Click="NewBlankPdf_Click"></MenuItem>
+                    <MenuItem Header="New Blank" Click="NewBlankPdf_Click"></MenuItem>
                     <MenuItem Header="Save" Click="Save_Click"></MenuItem>
                     <MenuItem Header="Save All" Click="SaveAll_Click"></MenuItem>
+                    <MenuItem Header="Save As" Click="SaveAs_Click"></MenuItem>
                     <MenuItem Name="BtnClose" Header="Close" Click="Close_Click"></MenuItem>
                     <MenuItem Header="Close All" Click="CloseAll_Click"></MenuItem>
                     <MenuItem Header="Exit" Click="Exit_Click"></MenuItem>
@@ -54,8 +55,8 @@
                 <TabItem Header="View">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <controls:TabButton Text="New Tab" PreviewMouseDown="NewTab_Click" Margin="10,0,10,0"></controls:TabButton>
-                        <controls:TabButton Text="Close Tab" PreviewMouseDown="NewTab_Click" Margin="10,0,10,0" Width="131"></controls:TabButton>
-                        <controls:TabButton Text="Close All" PreviewMouseDown="NewTab_Click" Margin="10,0,10,0" Width="131"></controls:TabButton>
+                        <controls:TabButton Text="Close Tab" PreviewMouseDown="CloseTab_Click" Margin="10,0,10,0" Width="131"></controls:TabButton>
+                        <controls:TabButton Text="Close All" PreviewMouseDown="btnCloseAll_Click" Margin="10,0,10,0" Width="131"></controls:TabButton>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Comment">

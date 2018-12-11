@@ -12,14 +12,10 @@ namespace WPF_PDFDocument
     /// </summary>
     public partial class MainWindow : Window
     {
-        private System.Collections.Generic.List<Boolean> IsSavedTab;
-        private System.Collections.Generic.List<string> OpenedFiles;
         private int NewDocCount;
         public MainWindow()
         {
             InitializeComponent();
-            IsSavedTab = new System.Collections.Generic.List<bool>();
-            OpenedFiles = new System.Collections.Generic.List<string>();
             NewDocCount = 0;
         }
 
@@ -70,11 +66,12 @@ namespace WPF_PDFDocument
                 //pdfviewer.PdfPath = openFile.FileName;
 
                 //Nếu file đã open
-                for (int i = 0; i < OpenedFiles.Count; i++)
+                foreach(System.Windows.Controls.TabItem item in TabController.Items)
                 {
-                    if(OpenedFiles[i]==info.Name)
+                    var pdfviewer = item.Content as Controls.PdfViewer;
+                    if(pdfviewer.OriginalPdfPath==info.Name)
                     {
-                        this.TabController.SelectedIndex = i;
+                        this.TabController.SelectedItem = item;
                         MessageBox.Show("File is already opened!", "Quick PDF Editor", MessageBoxButton.OK, MessageBoxImage.Information);
                         return;
                     }
@@ -84,12 +81,7 @@ namespace WPF_PDFDocument
                 System.Windows.Controls.TabItem tabItem = new System.Windows.Controls.TabItem();
                 tabItem.Header = info.Name;
 
-                //Thêm Tên file vào list
-                OpenedFiles.Add(info.Name);
                 //Opened File
-                IsSavedTab.Add(true);
-
-
                 Controls.PdfViewer pdfViewer = new Controls.PdfViewer();
                 pdfViewer.PdfPath = openFile.FileName;
                 tabItem.Content = pdfViewer;
@@ -100,26 +92,24 @@ namespace WPF_PDFDocument
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            if (IsSavedTab.Count == 0)
-                this.Close();
-
-            for (int i = 0; i < IsSavedTab.Count; i++)
+            foreach (System.Windows.Controls.TabItem item in TabController.Items)
             {
-                if (IsSavedTab[i] == false)
+                var pdfviewer = item.Content as Controls.PdfViewer;
+                if (pdfviewer.OriginalPdfPath !=pdfviewer.PdfPath)
                 {
-                    MessageBoxResult result = MessageBox.Show("Do you want to save " + OpenedFiles[i] + "?", "Save?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-                    if (result == MessageBoxResult.Yes)
+                    MessageBoxResult result = MessageBox.Show("Do you want to save this document?", "Quick Pdf Editor", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                    if(result== MessageBoxResult.OK)
                     {
-                        //Save
+                        this.Save_Click(sender, e);
+                        this.CloseTab_Click(sender, e as MouseButtonEventArgs);
                     }
-
-                    if (result == MessageBoxResult.No)
+                    else
                     {
-                        //Discard
-
+                        return;
                     }
                 }
             }
+
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -136,6 +126,13 @@ namespace WPF_PDFDocument
 
         private void InsertPage(object sender, MouseButtonEventArgs e)
         {
+            var tabItem = TabController.SelectedItem as System.Windows.Controls.TabItem;
+            if (tabItem == null)
+            {
+                MessageBox.Show("There is no file opening!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.Filter = "Pdf|*.pdf";
             openFile.ShowDialog();
@@ -144,7 +141,7 @@ namespace WPF_PDFDocument
                 return;
 
             //get path
-            var tabItem = TabController.SelectedItem as System.Windows.Controls.TabItem;
+            
             var pdfview = tabItem.Content as Controls.PdfViewer;
             string path = pdfview.PdfPath;
 
@@ -156,34 +153,63 @@ namespace WPF_PDFDocument
         private void NewTab_Click(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.TabItem tabItem = new System.Windows.Controls.TabItem();
-            tabItem.Header = "Blank";
+            tabItem.Header = "Blank Document";
             this.TabController.Items.Add(tabItem);
-            tabItem.BringIntoView();
+            this.TabController.SelectedItem = tabItem;
         }
 
         private void NewBlankPdf_Click(object sender, RoutedEventArgs e)
         {
+            
             ///Chưa hoàn thiện
             //Nếu File chưa Open
-            System.Windows.Controls.TabItem tabItem = new System.Windows.Controls.TabItem();
-            tabItem.Header = "Document" + (++NewDocCount);
-            Controls.PdfViewer pdfViewer = new Controls.PdfViewer();
-            tabItem.Content = pdfViewer;
-            this.TabController.Items.Add(tabItem);
-            Dispatcher.BeginInvoke((Action)(() => this.TabController.SelectedIndex = this.TabController.Items.Count - 1));
+            
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            //Check
+            if (TabController.SelectedIndex == -1)
+            {
+                MessageBox.Show("There is nothing to save!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var tabitem = TabController.SelectedItem as System.Windows.Controls.TabItem;
+            if (tabitem.Content == null)
+            {
+                MessageBox.Show("Cannot save blank document!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var pdfviewer = tabitem.Content as Controls.PdfViewer;
+            if (pdfviewer.OriginalPdfPath == pdfviewer.PdfPath)
+            {
+                return;
+            }
+
             var tab = this.TabController.SelectedItem as System.Windows.Controls.TabItem;
-            var pdfviewer = tab.Content as Controls.PdfViewer;
+
+            string originalpath = pdfviewer.OriginalPdfPath;
+            string currentpath = pdfviewer.PdfPath;
 
             if(pdfviewer.PdfPath==pdfviewer.OriginalPdfPath)
             {
                 return;
             }
+            
+            
+            label1:
 
-            System.IO.File.Delete(pdfviewer.OriginalPdfPath);
+            try
+            {
+                System.IO.File.Delete(pdfviewer.OriginalPdfPath);
+            }catch(UnauthorizedAccessException)
+            {
+                MessageBox.Show("Please Wait...");
+                goto label1;
+            }
+            
 
             FileInfo fileInfo = new FileInfo(pdfviewer.PdfPath);
             fileInfo.MoveTo(pdfviewer.OriginalPdfPath);
@@ -198,7 +224,7 @@ namespace WPF_PDFDocument
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            if(this.OpenedFiles.Count==0)
+            if(this.TabController.Items.Count==0)
             {
                 MessageBox.Show("There is nothing to close!", "Quick PDF Editor", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
@@ -207,31 +233,125 @@ namespace WPF_PDFDocument
             //Compare original path with pdfpath
             var tab = this.TabController.SelectedItem as System.Windows.Controls.TabItem;
             var pdfviewer = tab.Content as Controls.PdfViewer;
-            if(pdfviewer.OriginalPdfPath!=pdfviewer.PdfPath)
+            if (tab == null||pdfviewer==null)
+                goto label1;
+
+            if (pdfviewer.OriginalPdfPath!=pdfviewer.PdfPath)
             {
                 MessageBoxResult result = MessageBox.Show("Do you want to save this document?", "Quick Pdf Editor", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Cancel)
                     return;
                 if(result==MessageBoxResult.Yes)
                 {
-                    MessageBox.Show("Save");
+                    //Can't use sender and e
+                    this.Save_Click(sender, e);
                 }
             }
+
+            label1:
             int index = TabController.SelectedIndex;
             this.TabController.Items.RemoveAt(index);
-            this.OpenedFiles.RemoveAt(index);
         }
 
         private void CloseAll_Click(object sender, RoutedEventArgs e)
         {
-
+            if (TabController.Items.Count >= 0)
+            {
+                TabController.SelectedIndex = 0;
+            }
+            else
+                return;
+            
+            while(TabController.Items.Count>0)
+            {
+                TabController.SelectedIndex = 0;
+                Close_Click(sender, e);
+            }
         }
 
         private void DeletePage_Click(object sender, MouseButtonEventArgs e)
         {
+            var tabItem = TabController.SelectedItem as System.Windows.Controls.TabItem;
+            if (tabItem == null)
+            {
+                MessageBox.Show("There is no file opening!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             Dialog.DeletePage deletePage = new Dialog.DeletePage(this.TabController.SelectedItem as System.Windows.Controls.TabItem);
             deletePage.Show();
-            deletePage.BringIntoView();
+        }
+
+        private void CloseTab_Click(object sender, MouseButtonEventArgs e)
+        {
+            Close_Click(sender, e);
+        }
+
+        private void btnCloseAll_Click(object sender, MouseButtonEventArgs e)
+        {
+            CloseAll_Click(sender, e as MouseButtonEventArgs);
+        }
+
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            if(TabController.SelectedIndex==-1)
+            {
+                MessageBox.Show("There is nothing to save!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var tabitem = TabController.SelectedItem as System.Windows.Controls.TabItem;
+            if(tabitem.Content==null)
+            {
+                MessageBox.Show("Cannot save blank document!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var pdfviewer = tabitem.Content as Controls.PdfViewer;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Pdf Document|.pdf";
+            saveFileDialog.FileName = pdfviewer.OriginalPdfPath;
+            if(saveFileDialog.ShowDialog()==true)
+            {
+                FileInfo info = new FileInfo(saveFileDialog.FileName);
+                if(info.Exists)
+                {
+                    if (info.FullName == saveFileDialog.FileName)
+                        return;
+                    MessageBoxResult result = MessageBox.Show("File is already exist. Do you want to overwrite?","Quick Pdf Editor",MessageBoxButton.YesNoCancel,MessageBoxImage.Warning);
+                    if(result== MessageBoxResult.Yes)
+                    {
+                        info.Delete();
+                        try
+                        {
+                            File.Copy(pdfviewer.PdfPath, saveFileDialog.FileName);
+                            MessageBox.Show("File saved!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                            MessageBox.Show("File IO Error!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                        }
+
+                    }
+                    if(result==MessageBoxResult.No)
+                    {
+                        saveFileDialog.ShowDialog();
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        File.Copy(pdfviewer.PdfPath, saveFileDialog.FileName);
+                        MessageBox.Show("File saved!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }catch(UnauthorizedAccessException)
+                    {
+                        MessageBox.Show("File IO Error!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    }
+                }
+            }
         }
     }
 }

@@ -9,8 +9,8 @@
     <Grid>
         <Label Content="Begin&#xD;&#xA;" HorizontalAlignment="Left" Margin="21,36,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.184,-0.987" Width="64"/>
         <Label Content="End" HorizontalAlignment="Left" Margin="21,83,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="tbBegin" HorizontalAlignment="Left" Height="23" Margin="104,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name="tbEnd" HorizontalAlignment="Left" Height="23" Margin="104,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="tbBegin" HorizontalAlignment="Left" Height="23" Margin="104,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" KeyDown="tbBegin_KeyDown"/>
+        <TextBox Name="tbEnd" HorizontalAlignment="Left" Height="23" Margin="104,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" KeyDown="tbBegin_KeyDown"/>
         <Button Content="Done" HorizontalAlignment="Left" Margin="257,10,0,0" VerticalAlignment="Top" Width="75" Click="Done_Click"/>
         <Button Content="Exit" HorizontalAlignment="Left" Margin="257,36,0,0" VerticalAlignment="Top" Width="75" Click="Exit_Click"/>
 

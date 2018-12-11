@@ -38,6 +38,7 @@ namespace WPF_PDFDocument.Dialog
         {
             InitializeComponent();
             ListPageInsert = new List<int>();
+            this.tboffset.Text = "0";
             var pdfviewer = tab.Content as Controls.PdfViewer;
             DesPath = pdfviewer.PdfPath;
             this.tabitem = tab;
@@ -45,7 +46,7 @@ namespace WPF_PDFDocument.Dialog
 
         private void InsertCurrentPage_Click(object sender, RoutedEventArgs e)
         {
-            ListPageInsert.Add(Convert.ToInt32(PreviewPDF.textbox.Text));
+            ListPageInsert.Add(Convert.ToInt32(PreviewPDF.CurrentPage));
             UpdateListPage();
         }
 
@@ -68,6 +69,18 @@ namespace WPF_PDFDocument.Dialog
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
+            if (ListPageInsert.Count == 0)
+            {
+                MessageBox.Show("There is no page to insert!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if(tboffset.Text=="")
+            {
+                MessageBox.Show("Please enter offset!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             PDFAction.InsertPageFromPdf(this.PreviewPDF.PdfPath, this.DesPath, ListPageInsert,this.offset);
             MessageBox.Show("Insert pages successfully!","Notification",MessageBoxButton.OK,MessageBoxImage.Information);
 
@@ -92,7 +105,17 @@ namespace WPF_PDFDocument.Dialog
 
         private void PageOffset_Changed(object sender, TextChangedEventArgs e)
         {
+            if (tboffset.Text == "")
+                tboffset.Text = "0";
             this.offset = Convert.ToInt32(this.tboffset.Text);
+        }
+
+        private void Offset_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (!(e.Key == System.Windows.Input.Key.NumPad0 || e.Key == System.Windows.Input.Key.NumPad1 || e.Key == System.Windows.Input.Key.NumPad2 || e.Key == System.Windows.Input.Key.NumPad3 || e.Key == System.Windows.Input.Key.NumPad4 || e.Key == System.Windows.Input.Key.NumPad5 || e.Key == System.Windows.Input.Key.NumPad6 || e.Key == System.Windows.Input.Key.NumPad7 || e.Key == System.Windows.Input.Key.NumPad8 || e.Key == System.Windows.Input.Key.NumPad9 || (e.Key < System.Windows.Input.Key.D9 && e.Key > System.Windows.Input.Key.D0)))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
