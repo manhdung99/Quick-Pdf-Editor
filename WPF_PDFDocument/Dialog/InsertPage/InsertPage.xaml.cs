@@ -40,7 +40,13 @@ namespace WPF_PDFDocument.Dialog
             ListPageInsert = new List<int>();
             this.tboffset.Text = "0";
             var pdfviewer = tab.Content as Controls.PdfViewer;
-            DesPath = pdfviewer.PdfPath;
+            try
+            {
+                DesPath = pdfviewer.PdfPath;
+            }catch(NullReferenceException)
+            {
+
+            }
             this.tabitem = tab;
         }
 
@@ -80,12 +86,24 @@ namespace WPF_PDFDocument.Dialog
                 MessageBox.Show("Please enter offset!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            var pdfviever = tabitem.Content as Controls.PdfViewer;
+
+            if(pdfviever==null)
+            {
+                pdfviever = new Controls.PdfViewer();
+                tabitem.Content = pdfviever;
+                pdfviever.PdfPath = PDFAction.InsertPageFromPdf(this.PreviewPDF.PdfPath, ListPageInsert);
+                pdfviever.OriginalPdfPath = "";
+
+                MessageBox.Show("Insert Pages successfully!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
+                return;
+            }
 
             PDFAction.InsertPageFromPdf(this.PreviewPDF.PdfPath, this.DesPath, ListPageInsert,this.offset);
             MessageBox.Show("Insert pages successfully!","Notification",MessageBoxButton.OK,MessageBoxImage.Information);
-
             //Create Temporary
-            var pdfviever = tabitem.Content as Controls.PdfViewer;
+            
             pdfviever.PdfPath= System.IO.Path.Combine(System.IO.Path.GetTempPath(), "Merged" + --PDFAction.number + ".pdf");
             this.Close();
         }

@@ -37,6 +37,8 @@ namespace WPF_PDFDocument
                 return;
             }
 
+
+
             pdfMerger.Merge(des, 1, offset);
 
             for (int i = 0; i < ListPage.Count; i++)
@@ -54,6 +56,25 @@ namespace WPF_PDFDocument
             pdfMergered.Close();
         }
 
+        public static string InsertPageFromPdf(string PdfSourcePath, System.Collections.Generic.List<int> ListPage)
+        {
+            //PDF Merger
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "Merged" + number++ + ".pdf");
+            PdfDocument pdfMergered = new PdfDocument(new PdfWriter(path));
+            PdfMerger pdfMerger = new PdfMerger(pdfMergered);
+
+            //Source and Des
+            PdfDocument source = new PdfDocument(new PdfReader(PdfSourcePath));
+
+            //Check offset
+            for (int i = 0; i < ListPage.Count; i++)
+            {
+                pdfMerger.Merge(source, ListPage[i] + 1, ListPage[i] + 1);
+            }
+            source.Close();
+            pdfMergered.Close();
+            return path;
+        }
 
 
 

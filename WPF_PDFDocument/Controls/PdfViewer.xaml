@@ -14,10 +14,8 @@
             <RowDefinition Height="20">
             </RowDefinition>
         </Grid.RowDefinitions>
-        <ScrollViewer Name="scrollview" Grid.Row="0" PanningMode="Both" Background="DarkGray" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" PreviewMouseWheel="ItemControl_Scroll">
-            <Grid Width="{Binding ElementName=scrollview, Path=Width}" Height="{Binding ElementName=scrollview,Path=Height}">
-                <ItemsControl x:Name="PagesContainer" MouseDown="PagesContainer_MouseDown"></ItemsControl>
-            </Grid>
+        <ScrollViewer Name="scrollview" Grid.Row="0" PanningMode="Both" Background="Gray" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseWheel="ItemControl_Scroll">
+                <ItemsControl x:Name="PagesContainer" Background="Gray"></ItemsControl>
         </ScrollViewer>
         <ComboBox Name="Pages" Grid.Row="1" HorizontalAlignment="Center" Width="100" SelectedIndex="0"></ComboBox>
         <Slider Grid.Row="1" Name="slider" HorizontalAlignment="Right" Width="100" Minimum="-1" LargeChange="0.1" ValueChanged="SliderZoom_ValueChange" TickFrequency="0" Maximum="1"/>
