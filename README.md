@@ -18,8 +18,9 @@ Visual studio 2017 cùng với .Net 4.7.2 trở lên
 Do Microsoft Visual Studio Installer Projects không cho phép project có file .winmd nên hãy sử dụng các phần mềm tạo setup khác như Inno Script Studio
 
 # Built With
-- Windows Presentation Foundation (WPF) (C#)
-- Itext7 community
+- Windows Presentation Foundation (WPF) (C#) - Tạo giao diện người dùng
+- Windows 10 API - Đọc file pdf và chuyển đổi thành bitmap tạo giao diện đọc pdf
+- Itext7 community - Thao tác chỉnh sửa và đọc, ghi file pdf
 
 # Tính năng
 - Thao tác file pdf trên nhiều tab
