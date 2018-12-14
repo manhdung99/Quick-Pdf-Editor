@@ -29,5 +29,5 @@ Do Microsoft Visual Studio Installer Projects không cho phép project có file 
 - Gộp nhanh nhiều file pdf thành một file.
 
 # Tác giả
-- Đào Mạnh Dũng @manhdung99
-- Phạm Duy Cường
+- Đào Mạnh Dũng [manhdung99]: https://github.com/manhdung99
+- Phạm Duy Cường [phamduycuong]: https://github.com/phamduycuong
