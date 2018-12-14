@@ -5,8 +5,8 @@ Quick Pdf Editor là phần mềm chỉnh sửa nhanh file pdf hoàn toàn miễ
 Dưới đây là là cách để sử dụng project trên máy tính của bạn.
 
 # Yêu cầu hệ thống:
-Visual studio 2017 cùng với .Net 4.7.2 trở lên
-.Net core 2.2 trở lên
+- Visual studio 2017 cùng với .Net 4.7.2 trở lên
+- .Net core 2.2 trở lên
 
 # Cài đặt: 
 - Bước 1: Tải và cài đặt các phần mềm yêu cầu ở bước trên (nếu chưa có)
