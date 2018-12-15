@@ -33,3 +33,6 @@ Link Setup: https://1drv.ms/u/s!AqpU4ZslX7KVgfVH5763v5AhoO3EiA
 # Tác giả
 - Đào Mạnh Dũng (Bắt đầu dự án): https://github.com/manhdung99
 - Phạm Duy Cường: https://github.com/phamduycuong
+
+# Báo cáo đồ án
+https://1drv.ms/w/s!AqpU4ZslX7KVgfU1uI8Ed4aOY3rLvA
