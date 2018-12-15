@@ -36,3 +36,6 @@ Link Setup: https://1drv.ms/u/s!AqpU4ZslX7KVgfVH5763v5AhoO3EiA
 
 # Báo cáo đồ án
 https://1drv.ms/w/s!AqpU4ZslX7KVgfU1uI8Ed4aOY3rLvA
+
+#Video Demo
+https://1drv.ms/f/s!AqpU4ZslX7KVgfVI8eS7Oijcq2vX2w
