@@ -13,6 +13,8 @@ Dưới đây là là cách để sử dụng project trên máy tính của b�
 - Bước 2: Tải toàn bộ project về máy dưới dạng file zip và giải nén.
 - Bước 3: Sau khi mở project, thêm file windows.winmd vào references. Đường dẫn: C:\Program Files (x86)\Windows Kits\10\UnionMetadata\...\Windows.winmd
 - Lưu ý: Phải chuyển Filefilter sang All files
+- Bước 4: Tải thư mục Icon ở link bên dưới và copy vào thư mục debug của project: 
+https://1drv.ms/f/s!AqpU4ZslX7KVgfUk-0Zh8i3TVy5JPQ
 
 # Cách tạo setup:
 Do Microsoft Visual Studio Installer Projects không cho phép project có file .winmd nên hãy sử dụng các phần mềm tạo setup khác như Inno Script Studio
