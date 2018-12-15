@@ -278,7 +278,7 @@ namespace WPF_PDFDocument
                 return;
             }
             Dialog.DeletePage deletePage = new Dialog.DeletePage(this.TabController.SelectedItem as System.Windows.Controls.TabItem);
-            deletePage.Show();
+            deletePage.ShowDialog();
         }
 
         private void CloseTab_Click(object sender, MouseButtonEventArgs e)
@@ -362,7 +362,7 @@ namespace WPF_PDFDocument
 
         private void NewBlankClick(object sender, MouseButtonEventArgs e)
         {
-            NewBlankPdf_Click(sender, e);
+            NewTabClick(sender, e);
         }
 
         private void Save(object sender, MouseButtonEventArgs e)
@@ -386,6 +386,17 @@ namespace WPF_PDFDocument
         private void CloseClick(object sender, RoutedEventArgs e)
         {
             Close_Click(sender, e);
+        }
+
+        private void PdfMerger_Click(object sender, MouseButtonEventArgs e)
+        {
+            Dialog.PdfMerger pdfMerger = new Dialog.PdfMerger(TabController);
+            pdfMerger.ShowDialog();
+        }
+
+        void test()
+        {
+            
         }
     }
 }

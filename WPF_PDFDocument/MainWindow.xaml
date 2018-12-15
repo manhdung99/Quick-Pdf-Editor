@@ -46,7 +46,7 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <controls:TabButton x:Name="BtnInsertPage" Text="Insert Page" PreviewMouseDown="InsertPage" IconPath="Icon\InsertPage.png"></controls:TabButton>
                         <controls:TabButton  Text="Delete Page" IconPath="Icon\DeletePage.png" PreviewMouseDown="DeletePage_Click"></controls:TabButton>
-                        <controls:TabButton Text="PdfMerger" IconPath="Icon\PdfMerger.png"></controls:TabButton>
+                        <controls:TabButton Text="PdfMerger" IconPath="Icon\PdfMerger.png" PreviewMouseDown="PdfMerger_Click"></controls:TabButton>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="View">

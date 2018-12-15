@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace WPF_PDFDocument.Dialog
 {
-    
+
     public partial class InsertPage : Window
     {
         TabItem tabitem;
@@ -22,8 +22,8 @@ namespace WPF_PDFDocument.Dialog
                 _offset = value;
                 tboffset.Text = _offset.ToString();
             }
-              
-            
+
+
         }
         private string DesPath;
         public InsertPage()
@@ -32,7 +32,7 @@ namespace WPF_PDFDocument.Dialog
             ListPageInsert = new List<int>();
             offset = PreviewPDF.PagesContainer.Items.Count;
         }
-        
+
         //Woring
         public InsertPage(TabItem tab)
         {
@@ -43,7 +43,8 @@ namespace WPF_PDFDocument.Dialog
             try
             {
                 DesPath = pdfviewer.PdfPath;
-            }catch(NullReferenceException)
+            }
+            catch (NullReferenceException)
             {
 
             }
@@ -52,7 +53,7 @@ namespace WPF_PDFDocument.Dialog
 
         private void InsertCurrentPage_Click(object sender, RoutedEventArgs e)
         {
-            ListPageInsert.Add(Convert.ToInt32(PreviewPDF.CurrentPage));
+            ListPageInsert.Add(PreviewPDF.CurrentPage);
             UpdateListPage();
         }
 
@@ -62,7 +63,7 @@ namespace WPF_PDFDocument.Dialog
             for (int i = 0; i < ListPageInsert.Count; i++)
             {
                 ListBoxItem listBoxItem = new ListBoxItem();
-                listBoxItem.Content = "Page " + ListPageInsert[i];
+                listBoxItem.Content = "Page " + (ListPageInsert[i] + 1);
                 this.ListBox_Data.Items.Add(listBoxItem);
             }
 
@@ -81,14 +82,14 @@ namespace WPF_PDFDocument.Dialog
                 return;
             }
 
-            if(tboffset.Text=="")
+            if (tboffset.Text == "")
             {
                 MessageBox.Show("Please enter offset!", "Quick Pdf Editor", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             var pdfviever = tabitem.Content as Controls.PdfViewer;
 
-            if(pdfviever==null)
+            if (pdfviever == null)
             {
                 pdfviever = new Controls.PdfViewer();
                 tabitem.Content = pdfviever;
@@ -100,17 +101,17 @@ namespace WPF_PDFDocument.Dialog
                 return;
             }
 
-            PDFAction.InsertPageFromPdf(this.PreviewPDF.PdfPath, this.DesPath, ListPageInsert,this.offset);
-            MessageBox.Show("Insert pages successfully!","Notification",MessageBoxButton.OK,MessageBoxImage.Information);
+            PDFAction.InsertPageFromPdf(this.PreviewPDF.PdfPath, this.DesPath, ListPageInsert, this.offset);
+            MessageBox.Show("Insert pages successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
             //Create Temporary
-            
-            pdfviever.PdfPath= System.IO.Path.Combine(System.IO.Path.GetTempPath(), "Merged" + --PDFAction.number + ".pdf");
+
+            pdfviever.PdfPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "Merged" + (PDFAction.number - 1) + ".pdf");
             this.Close();
         }
 
         private void Insertatob_Click(object sender, RoutedEventArgs e)
         {
-            ChoosePageInsert Pagea2b = new ChoosePageInsert(this.ListPageInsert,this);
+            ChoosePageInsert Pagea2b = new ChoosePageInsert(this.ListPageInsert, this);
             Pagea2b.Show();
         }
 

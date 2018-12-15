@@ -29,7 +29,7 @@ namespace WPF_PDFDocument.Dialog
             end = Convert.ToInt32(tbEnd.Text);
             for (int i = begin; i <= end; i++)
             {
-                ListPage.Add(i);
+                ListPage.Add(i - 1);
             }
             this.Close();
         }

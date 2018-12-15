@@ -26,17 +26,12 @@ namespace WPF_PDFDocument
                     pdfMerger.Merge(source, ListPage[i] + 1, ListPage[i] + 1);
                 }
 
-                if (offset + 1 <= des.GetNumberOfPages())
-                {
-                    pdfMerger.Merge(des, offset + 2, des.GetNumberOfPages());
-                }
-
+                pdfMerger.Merge(des, 1, des.GetNumberOfPages());
                 source.Close();
                 des.Close();
                 pdfMergered.Close();
                 return;
             }
-
 
 
             pdfMerger.Merge(des, 1, offset);
@@ -111,6 +106,37 @@ namespace WPF_PDFDocument
             source.Close();
             pdfMerger.Close();
             pdfMergered.Close();
+            return path;
+        }
+
+        public static string MergePdf(System.Collections.Generic.List<string> Paths)
+        {
+            if (!System.IO.Directory.Exists(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "MergePdf")))
+            {
+                System.IO.Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "MergePdf"));
+            }
+
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "MergePdf", "Merged" + number++ + ".pdf");
+
+
+            if (System.IO.File.Exists(path))
+                System.IO.File.Delete(path);
+
+            PdfDocument pdfMergered = new PdfDocument(new PdfWriter(path));
+            PdfMerger pdfMerger = new PdfMerger(pdfMergered);
+
+            for (int i = 0; i < Paths.Count; i++)
+            {
+                System.IO.FileInfo fileInfo = new System.IO.FileInfo(Paths[i]);
+                if (fileInfo.Extension != ".pdf")
+                    continue;
+
+                PdfDocument source = new PdfDocument(new PdfReader(Paths[i]));
+                pdfMerger.Merge(source, 1, source.GetNumberOfPages());
+                source.Close();
+            }
+
+            pdfMerger.Close();
             return path;
         }
     }
