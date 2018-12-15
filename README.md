@@ -17,6 +17,8 @@ Dưới đây là là cách để sử dụng project trên máy tính của b�
 # Cách tạo setup:
 Do Microsoft Visual Studio Installer Projects không cho phép project có file .winmd nên hãy sử dụng các phần mềm tạo setup khác như Inno Script Studio
 
+Link Setup: https://1drv.ms/u/s!AqpU4ZslX7KVgfVH5763v5AhoO3EiA
+
 # Built With
 - Windows Presentation Foundation (WPF) (C#) - Tạo giao diện người dùng
 - Windows 10 API - Đọc file pdf và chuyển đổi thành bitmap tạo giao diện đọc pdf
