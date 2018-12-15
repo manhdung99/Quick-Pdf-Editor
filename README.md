@@ -6,6 +6,7 @@ Dưới đây là là cách để sử dụng project trên máy tính của b�
 
 # Yêu cầu hệ thống:
 - Visual studio 2017 cùng với .Net 4.7.2 trở lên
+- Windows 10
 - .Net core 2.2 trở lên
 
 # Cài đặt: 
