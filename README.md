@@ -16,6 +16,8 @@ Dưới đây là là cách để sử dụng project trên máy tính của b�
 - Lưu ý: Phải chuyển Filefilter sang All files
 - Bước 4: Tải thư mục Icon ở link bên dưới và copy vào thư mục debug của project: 
 https://1drv.ms/f/s!AqpU4ZslX7KVgfUk-0Zh8i3TVy5JPQ
+- Bước 5: Tải Itext7 (nếu chưa có). Có thể tải bằng Nuget như sau: PM>Install-Package itext7 -Version 7.1.4
+
 
 # Cách tạo setup:
 Do Microsoft Visual Studio Installer Projects không cho phép project có file .winmd nên hãy sử dụng các phần mềm tạo setup khác như Inno Script Studio
